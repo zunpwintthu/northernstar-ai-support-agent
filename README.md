@@ -1,4 +1,4 @@
-# 👟 NorthernStar Customer Support AI
+# 👟 NorthernStar Customer Support AI (https://northernstar-ai-email-support.streamlit.app) 
 
 An AI-powered customer support assistant built with **Python**, **Streamlit**, and **Ollama**.
 
