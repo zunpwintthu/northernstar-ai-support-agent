@@ -1,81 +1,82 @@
-# 👟 NorthernStar Customer Support AI (https://northernstar-ai-email-support.streamlit.app) 
+# 👟 NorthernStar AI Support Agent (https://northernstar-ai-email-support.streamlit.app)
 
-An AI-powered customer support assistant built with **Python**, **Streamlit**, and **Ollama**.
+An AI-powered customer support assistant built with **Python**, **Streamlit**, and **Google Gemini**.
 
-This project demonstrates how Generative AI can help customer support teams analyze incoming emails, classify requests, determine urgency, and draft professional replies while keeping a human in the approval loop.
+This project demonstrates how Generative AI can help customer support teams analyze customer emails, classify requests, determine urgency, detect sentiment, and generate professional reply drafts while keeping humans in the approval workflow.
 
----
+> **Note:** This is a portfolio project created for learning and demonstration purposes. It is not affiliated with any specific company.
 
-## 🚀 Features
+## ✨ Features
 
-- 📧 Analyze customer emails
-- 🏷️ Classify support requests
-- ⚡ Detect urgency
-- 😊 Detect customer sentiment
-- 📝 Generate professional reply drafts
+- 📧 Customer email analysis
+- 🏷️ Email classification
+- ⚡ Urgency detection
+- 😊 Sentiment analysis
+- 📝 AI-generated reply drafts
 - 👨‍💼 Human review recommendation
-- 💾 Download drafted response
+- 💾 Download reply
 
 ---
 
-## Architecture
+# 🏗️ Architecture
 
 ```text
 Customer Email
         │
         ▼
- Streamlit Web UI
+ Streamlit Web Application
         │
         ▼
- Prompt Builder
+ Prompt Engineering
         │
         ▼
- Ollama (llama3.2)
+ Google Gemini API
         │
         ▼
- Structured JSON
+ Structured JSON Response
         │
         ▼
- Display Analysis
+ Customer Support Dashboard
 ```
 
 ---
 
-## Technology Stack
+# 🛠 Technology Stack
 
 | Technology | Purpose |
 |------------|---------|
 | Python | Backend |
 | Streamlit | Web UI |
-| Ollama | Local LLM |
-| Requests | HTTP Client |
+| Google Gemini | Large Language Model |
+| Google GenAI SDK | Gemini Integration |
 
 ---
 
-## Project Structure
+# 📂 Project Structure
 
 ```text
-northerStar-support-ai/
+northernstar-ai-support-agent/
 │
 ├── app.py
 ├── requirements.txt
 ├── README.md
-└── .gitignore
+├── .gitignore
+└── .streamlit/
 ```
 
 ---
 
-## Installation
+# ⚙️ Installation
 
 Clone the repository
 
 ```bash
-git clone https://github.com/YOUR_GITHUB_USERNAME/sunnystep-support-ai.git
+git clone https://github.com/zunpwintthu/northernstar-ai-support-agent.git
 
-cd sunnystep-support-ai
+cd northernstar-ai-support-agent
 ```
 
-Create virtual environment
+Create a virtual environment
 
 ```bash
 python3 -m venv .venv
@@ -89,12 +90,6 @@ macOS/Linux
 source .venv/bin/activate
 ```
 
-Windows
-
-```cmd
-.venv\Scripts\activate
-```
-
 Install dependencies
 
 ```bash
@@ -103,37 +98,33 @@ pip install -r requirements.txt
 
 ---
 
-## Install Ollama
+# 🔑 Configure Google Gemini
 
-Install Ollama
+Create the folder
 
-https://ollama.com
-
-Download the model
-
-```bash
-ollama pull llama3.2
+```text
+.streamlit/
 ```
 
-Verify
+Create
 
-```bash
-ollama list
+```text
+.streamlit/secrets.toml
 ```
+
+Add your API key
+
+```toml
+GEMINI_API_KEY="YOUR_API_KEY"
+```
+
+Get a free API key from Google AI Studio:
+
+https://aistudio.google.com/
 
 ---
 
-## Run the Application
-
-Start Ollama
-
-```bash
-ollama serve
-```
-
-> If you see "address already in use", Ollama is already running.
-
-Run Streamlit
+# ▶️ Run
 
 ```bash
 streamlit run app.py
@@ -147,9 +138,9 @@ http://localhost:8501
 
 ---
 
-## Example Workflow
+# 📧 Example
 
-Customer Email
+### Input
 
 ```
 Hi,
@@ -161,96 +152,102 @@ Can you help me exchange it?
 Thanks.
 ```
 
-↓
+### Output
 
-AI Analysis
+**Category**
 
-- Category: Return
-- Urgency: Medium
-- Sentiment: Negative
+Return
 
-↓
+**Urgency**
 
-AI Reply Draft
+Medium
+
+**Sentiment**
+
+Negative
+
+**Summary**
+
+Customer received the wrong shoe size and requests an exchange.
+
+**Suggested Reply**
 
 ```
 Hello,
 
-Thank you for contacting NorthernStar.
+Thank you for contacting us.
 
-We're sorry to hear that you received the wrong size.
+We're sorry that you received the wrong shoe size.
 
-Please reply with your order number and we will assist you with the exchange process.
+Please provide your order number so our support team can assist you with the exchange.
 
 Kind regards,
-NorthernStar Support
+Customer Support
 ```
 
 ---
 
-## Future Improvements
+# 🔒 Human-in-the-loop
+
+The AI **does not** automatically send emails.
+
+High-risk cases such as:
+
+- Refund requests
+- Payment disputes
+- Legal issues
+- Safety concerns
+
+are flagged for manual review.
+
+---
+
+# 🚀 Future Improvements
 
 - RAG Knowledge Base
 - Product Catalog Search
 - Order Tracking API
 - CRM Integration
 - Email Automation
-- Multi-Agent Workflow
-- Analytics Dashboard
+- LangGraph Agent Workflow
+- Confidence Score
 - Authentication
 - Docker Deployment
-- Cloud LLM Support
+- Monitoring Dashboard
 
 ---
 
-## Production Architecture
+# 📷 Screenshot
+
+> Add a screenshot here after deployment.
 
 ```text
-Customer
-      │
-      ▼
-Streamlit
-      │
-      ▼
-API Gateway
-      │
-      ▼
-LLM
-      │
-      ├──────────► Order API
-      │
-      ├──────────► Product Database
-      │
-      ├──────────► Company Knowledge Base
-      │
-      └──────────► CRM
-      │
-      ▼
-Human Approval
-      │
-      ▼
-Customer Reply
+assets/demo.png
+```
+
+```markdown
+![Application Screenshot](assets/demo.png)
 ```
 
 ---
 
-## Current Limitations
+# 🎯 Skills Demonstrated
 
-This MVP uses a **local Ollama server**.
-
-When deploying to Streamlit Community Cloud, replace the local LLM with a hosted provider such as:
-
-- OpenAI
-- Google Gemini
-- Groq
-- Azure OpenAI
+- Prompt Engineering
+- Google Gemini API
+- Streamlit Development
+- JSON Structured Output
+- Human-in-the-loop AI
+- Python
+- AI Application Development
+- Customer Support Automation
 
 ---
 
-## Author
+# 👨‍💻 Author
 
 **Zun**
 
 AI Engineer Portfolio Project
 
-Built for the NorthernStar AI Platform Engineer Interview.
+Built to demonstrate practical AI engineering skills using Python, Streamlit, and Google Gemini.
