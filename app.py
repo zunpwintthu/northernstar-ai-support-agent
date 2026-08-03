@@ -4,9 +4,20 @@ from typing import Any
 import requests
 import streamlit as st
 
+import os
 
-OLLAMA_URL = "http://localhost:11434/api/generate"
-OLLAMA_MODEL = "llama3.2"
+##OLLAMA_URL = "http://localhost:11434/api/generate"
+## OLLAMA_MODEL = "llama3.2"
+
+OLLAMA_URL = os.getenv(
+    "OLLAMA_URL",
+    "http://localhost:11434/api/generate",
+)
+
+OLLAMA_MODEL = os.getenv(
+    "OLLAMA_MODEL",
+    "llama3.2",
+)
 
 
 def build_prompt(customer_email: str) -> str:
