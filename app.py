@@ -1,23 +1,12 @@
 import json
 from typing import Any
-
-import requests
 import streamlit as st
 
-import os
+from google import genai
 
+GEMINI_MODEL = "gemini-flash-latest"
 ##OLLAMA_URL = "http://localhost:11434/api/generate"
 ## OLLAMA_MODEL = "llama3.2"
-
-OLLAMA_URL = os.getenv(
-    "OLLAMA_URL",
-    "http://localhost:11434/api/generate",
-)
-
-OLLAMA_MODEL = os.getenv(
-    "OLLAMA_MODEL",
-    "llama3.2",
-)
 
 
 def build_prompt(customer_email: str) -> str:
@@ -160,57 +149,41 @@ def validate_result(result: dict[str, Any]) -> None:
         }
 
 
-def call_ollama(customer_email: str) -> dict[str, Any]:
-    payload = {
-        "model": OLLAMA_MODEL,
-        "prompt": build_prompt(customer_email),
-        "stream": False,
-        "format": "json",
-        "options": {
-            "temperature": 0.1
-        },
-    }
+def call_gemini(customer_email: str) -> dict[str, Any]:
+    try:
+        api_key = st.secrets["GEMINI_API_KEY"]
+    except KeyError as exc:
+        raise RuntimeError(
+            "GEMINI_API_KEY is missing from Streamlit secrets."
+        ) from exc
 
     try:
-        response = requests.post(
-            OLLAMA_URL,
-            json=payload,
-            timeout=120,
+        client = genai.Client(api_key=api_key)
+
+        response = client.models.generate_content(
+            model=GEMINI_MODEL,
+            contents=build_prompt(customer_email),
+            config={
+                "temperature": 0.1,
+                "response_mime_type": "application/json",
+            },
         )
-        response.raise_for_status()
 
-    except requests.ConnectionError as exc:
+    except Exception as exc:
         raise RuntimeError(
-            "Cannot connect to Ollama. Check that Ollama is running."
+            f"Gemini API request failed: {exc}"
         ) from exc
 
-    except requests.Timeout as exc:
-        raise RuntimeError(
-            "The AI model took too long to respond."
-        ) from exc
-
-    except requests.RequestException as exc:
-        raise RuntimeError(
-            f"Ollama request failed: {exc}"
-        ) from exc
-
-    try:
-        response_body = response.json()
-    except ValueError as exc:
-        raise RuntimeError(
-            "Ollama returned an invalid API response."
-        ) from exc
-
-    model_output = response_body.get("response")
+    model_output = response.text
 
     if not model_output:
-        raise RuntimeError("The AI returned an empty response.")
+        raise RuntimeError("Gemini returned an empty response.")
 
     try:
         parsed_output = json.loads(model_output)
     except json.JSONDecodeError as exc:
         raise RuntimeError(
-            f"The AI did not return valid JSON: {model_output}"
+            f"Gemini did not return valid JSON: {model_output}"
         ) from exc
 
     result = extract_result(parsed_output)
@@ -287,7 +260,7 @@ if analyze_button:
     else:
         with st.spinner("Analyzing customer email..."):
             try:
-                result = call_ollama(customer_email)
+                result = call_gemini(customer_email)
 
             except RuntimeError as error:
                 st.error(f"Error during analysis: {error}")
