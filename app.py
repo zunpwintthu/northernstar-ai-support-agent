@@ -11,7 +11,7 @@ GEMINI_MODEL = "gemini-flash-latest"
 
 def build_prompt(customer_email: str) -> str:
     return f"""
-You are a customer-support assistant for NorthenStart, a footwear company.
+You are a customer-support assistant for NorthenStar, a footwear company.
 
 Analyze the customer email and return exactly one valid JSON object.
 
